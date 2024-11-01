@@ -166,19 +166,19 @@ export function scanTokens(source: string): Token[] {
 				line++;
 			}
 			advance();
-
-			if (isAtEnd()) {
-				generateError(line, "Unterminated string");
-				return;
-			}
-
-			// The closing "
-			advance();
-
-			// Trim the surrounding quotes
-			const value = source.slice(start + 1, current - 1);
-			pushToken(TokenType.STRING, value);
 		}
+
+		if (isAtEnd()) {
+			generateError(line, "Unterminated string");
+			return;
+		}
+
+		// The closing "
+		advance();
+
+		// Trim the surrounding quotes
+		const value = source.slice(start + 1, current - 1);
+		pushToken(TokenType.STRING, value);
 	}
 
 	function isAlpha(c: string): boolean {

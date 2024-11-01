@@ -180,19 +180,19 @@ export class Scanner {
                 this.line++;
             }
             this.advance();
-
-            if (this.isAtEnd()) {
-                Lox.error(this.line, "Unterminated string");
-                return;
-            }
-
-            // The closing "
-            this.advance();
-
-            // Trim the surrounding quotes
-            const value = this.source.slice(this.start + 1, this.current - 1);
-            this.pushToken(TokenType.STRING, value);
         }
+
+        if (this.isAtEnd()) {
+            Lox.error(this.line, "Unterminated string");
+            return;
+        }
+
+        // The closing "
+        this.advance();
+
+        // Trim the surrounding quotes
+        const value = this.source.slice(this.start + 1, this.current - 1);
+        this.pushToken(TokenType.STRING, value);
     }
 
     isAlpha(c: string): boolean {
