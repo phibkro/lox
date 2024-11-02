@@ -76,13 +76,29 @@ export const tokenTypes = {
 };
 export type TokenKey = keyof typeof tokenTypes;
 export type TokenValue = (typeof tokenTypes)[TokenKey];
-
+export type TokenInstance = {
+	line: number;
+	token: Token;
+};
 export type Token = {
 	type: TokenKey;
-	lexeme: string;
-	literal: any;
-	line: number;
+	lexeme: TokenValue;
+	literal: string | number | null;
 };
+
+export function createToken<T extends TokenKey>(
+	type: T,
+	literal: T extends LiteralKey // if the type is a literal:
+		? T extends "NUMBER" ? number // and type is "NUMBER", then literal should be a number
+		: string // but not "NUMBER", then literal should be a string
+		: null, // if type isn't a literal, then literal should be null
+): Token {
+	return {
+		type,
+		lexeme: tokenTypes[type],
+		literal,
+	};
+}
 
 export const whitespaces = {
 	SPACE: " ",

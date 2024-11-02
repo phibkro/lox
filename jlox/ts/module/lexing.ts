@@ -1,20 +1,21 @@
 import { generateError } from "./main.ts";
 import {
+	createToken,
 	type DoubleKey,
 	keywords,
 	leading,
-	type LeadingKey,
-	type SingleKey,
-	singles,
-	type Token,
+		singles,
+	type TokenInstance,
 	type TokenKey,
 	tokenTypes,
 	whitespaces,
 } from "./types.ts";
 import { getKeyFromValue } from "./utils.ts";
 
-export function scanTokens(source: string): Token[] {
-	const tokens: Token[] = [];
+export function scanTokens(
+	source: string,
+): TokenInstance[] {
+	const tokens: TokenInstance[] = [];
 	// Points to first character in the lexeme being scanned
 	let start = 0;
 	// Points at the character currently being considered
@@ -26,12 +27,12 @@ export function scanTokens(source: string): Token[] {
 		scanToken();
 	}
 
-	tokens.push({
-		type: tokenTypes.EOF,
-		lexeme: "",
-		literal: null,
+	tokens.push(
+		{
 		line,
-	});
+			token: createToken(tokenTypes.EOF, null),
+		},
+	);
 
 	return tokens;
 
@@ -41,8 +42,7 @@ export function scanTokens(source: string): Token[] {
 		const singleKey = getKeyFromValue(singles, char);
 
 		if (singleKey) {
-			// char can be asserted to TokenType as it is a SingleCharacterValue
-			addToken(singleKey as SingleKey);
+			addToken(singleKey, null);
 			return;
 		}
 
@@ -50,9 +50,8 @@ export function scanTokens(source: string): Token[] {
 
 		if (leadingKey) {
 			addToken(
-				match("=")
-					? leadingKey + "_EQUAL" as DoubleKey
-					: leadingKey as LeadingKey,
+				match("=") ? leadingKey + "_EQUAL" as DoubleKey : leadingKey,
+				null,
 			);
 			return;
 		}
@@ -71,7 +70,7 @@ export function scanTokens(source: string): Token[] {
 						advance();
 					}
 				} else {
-					addToken("SLASH");
+					addToken("SLASH", null);
 				}
 				break;
 			case "\n":
@@ -97,7 +96,7 @@ export function scanTokens(source: string): Token[] {
 
 				// Trim the surrounding quotes
 				const value = source.slice(start + 1, current - 1);
-				pushToken(tokenTypes.STRING, value);
+				addToken(tokenTypes.STRING, value);
 				break;
 			}
 
@@ -116,8 +115,8 @@ export function scanTokens(source: string): Token[] {
 							advance();
 						}
 
-						pushToken(
-							tokenTypes.NUMBER,
+						addToken(
+							"NUMBER",
 							Number.parseFloat(source.substring(start, current)),
 						);
 					}
@@ -127,11 +126,13 @@ export function scanTokens(source: string): Token[] {
 						advance();
 					}
 					const text = source.slice(start, current);
-					let type = getKeyFromValue(keywords, text);
+					let type: TokenKey | undefined = getKeyFromValue(keywords, text);
 					if (!type) {
-						type = tokenTypes.IDENTIFIER;
+						type = "IDENTIFIER";
+						addToken(type, text);
+					} else {
+						addToken(type, null); // KeywordKey or IDENTIFIER
 					}
-					addToken(type as TokenKey); // KeywordKey or IDENTIFIER
 				} else {
 					generateError(line, `Unexpected character: ${char}`);
 				}
@@ -172,18 +173,13 @@ export function scanTokens(source: string): Token[] {
 		return source.charAt(current++);
 	}
 
-	function addToken(type: TokenKey) {
-		pushToken(type, null);
-	}
-
-	function pushToken(type: TokenKey, literal: any) {
-		const text = source.slice(start, current);
-		tokens.push({
-			type,
-			lexeme: text,
-			literal,
+	function addToken(type: TokenKey, literal: string | number | null) {
+		tokens.push(
+			{
 			line,
-		});
+				token: createToken(type, literal),
+			},
+		);
 	}
 }
 
