@@ -83,15 +83,15 @@ export type TokenInstance = {
 export type Token = {
 	type: TokenKey;
 	lexeme: TokenValue;
-	literal: string | number | null;
+	literal: string | number | undefined;
 };
 
 export function createToken<T extends TokenKey>(
 	type: T,
-	literal: T extends LiteralKey // if the type is a literal:
+	literal?: T extends LiteralKey // if the type is a literal:
 		? T extends "NUMBER" ? number // and type is "NUMBER", then literal should be a number
 		: string // but not "NUMBER", then literal should be a string
-		: null, // if type isn't a literal, then literal should be null
+		: undefined, // if type isn't a literal, then literal should be undefined
 ): Token {
 	return {
 		type,

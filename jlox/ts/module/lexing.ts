@@ -30,7 +30,7 @@ export function scanTokens(
 	tokens.push(
 		{
 			line,
-			token: createToken(tokenTypes.EOF, null),
+			token: createToken(tokenTypes.EOF),
 		},
 	);
 
@@ -42,7 +42,7 @@ export function scanTokens(
 		const singleKey = getKeyFromValue(singles, char);
 
 		if (singleKey) {
-			addToken(singleKey, null);
+			addToken(singleKey);
 			return;
 		}
 
@@ -51,7 +51,6 @@ export function scanTokens(
 		if (leadingKey) {
 			addToken(
 				match("=") ? leadingKey + "_EQUAL" as DoubleKey : leadingKey,
-				null,
 			);
 			return;
 		}
@@ -68,7 +67,7 @@ export function scanTokens(
 						advance();
 					}
 				} else {
-					addToken("SLASH", null);
+					addToken("SLASH");
 				}
 				break;
 			case "\n":
@@ -129,7 +128,7 @@ export function scanTokens(
 						type = "IDENTIFIER";
 						addToken(type, text);
 					} else {
-						addToken(type, null); // KeywordKey or IDENTIFIER
+						addToken(type); // KeywordKey or IDENTIFIER
 					}
 				} else {
 					generateError(line, `Unexpected character: ${char}`);
@@ -171,7 +170,7 @@ export function scanTokens(
 		return source.charAt(current++);
 	}
 
-	function addToken(type: TokenKey, literal: string | number | null) {
+	function addToken(type: TokenKey, literal?: string | number) {
 		tokens.push(
 			{
 				line,
