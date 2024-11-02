@@ -4,7 +4,7 @@ import {
 	type DoubleKey,
 	keywords,
 	leading,
-		singles,
+	singles,
 	type TokenInstance,
 	type TokenKey,
 	tokenTypes,
@@ -29,7 +29,7 @@ export function scanTokens(
 
 	tokens.push(
 		{
-		line,
+			line,
 			token: createToken(tokenTypes.EOF, null),
 		},
 	);
@@ -174,7 +174,7 @@ export function scanTokens(
 	function addToken(type: TokenKey, literal: string | number | null) {
 		tokens.push(
 			{
-			line,
+				line,
 				token: createToken(type, literal),
 			},
 		);
