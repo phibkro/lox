@@ -56,9 +56,7 @@ export function scanTokens(
 			return;
 		}
 
-		const whitespaceKey = getKeyFromValue(whitespaces, char);
-
-		if (whitespaceKey) {
+		if (getKeyFromValue(whitespaces, char)) {
 			return;
 		}
 
