@@ -1,3 +1,11 @@
+const parentheses = {
+	OPEN: "(",
+	CLOSED: ")",
+};
+const curlyBraces = {
+	OPEN: "{",
+	CLOSED: "}",
+};
 export const singles = {
 	// Single-character tokens.
 	LEFT_PAREN: "(",
@@ -83,7 +91,7 @@ export type TokenInstance = {
 export type Token = {
 	type: TokenKey;
 	lexeme: TokenValue;
-	literal: string | number | undefined;
+	literal?: string | number;
 };
 
 export function createToken<T extends TokenKey>(
@@ -106,3 +114,34 @@ export const whitespaces = {
 	TAB: "\t",
 } as const;
 export type WhitespaceKey = keyof typeof whitespaces;
+
+export type Bool = "true" | "false";
+export type Nil = "nil";
+export type Literal = {
+	value: number | string | boolean | undefined;
+};
+export type Expression = {
+	pre?: Expression | Literal;
+	post?: Expression | Literal;
+	operator: Token;
+};
+export type Binary = Required<Expression>;
+export type Group = Pick<Expression, "operator">;
+// export type Unary = Required<Pick<Expression, "post" | "operator">>;
+/* export type Group = {
+	operator: Token;
+};
+export type Unary = {
+	operator: Token;
+	post: Literal | Expression;
+};
+export type Binary = {
+	operator: Token;
+	pre: Literal | Expression;
+	post: Literal | Expression;
+};
+export type Expression = Literal | Group | Unary | Binary; */
+
+export type Primary = Bool | Nil;
+type UnaryOperator = "!" | "-";
+export type Unary = `${UnaryOperator}${Primary}`;

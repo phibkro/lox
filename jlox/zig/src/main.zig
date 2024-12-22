@@ -1,6 +1,17 @@
 const std = @import("std");
 
 pub fn main() !void {
+    const gpa = std.heap.GeneralPurposeAllocator(.{});
+    const args = try std.process.argsWithAllocator(gpa);
+    defer args.deinit();
+    var bw = std.io.bufferedWriter(stdout_file);
+    const stdout = bw.writer();
+    while (true) {
+        const arg = args.next();
+        if (arg)
+    }
+    const arg0 = args.next();
+    if (args.next())
     // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
     std.debug.print("All your {s} are belong to us.\n", .{"codebase"});
 
@@ -8,8 +19,6 @@ pub fn main() !void {
     // are implementing gzip, then only the compressed bytes should be sent to
     // stdout, not any debugging messages.
     const stdout_file = std.io.getStdOut().writer();
-    var bw = std.io.bufferedWriter(stdout_file);
-    const stdout = bw.writer();
 
     try stdout.print("Run `zig build test` to run the tests.\n", .{});
 
