@@ -1,14 +1,14 @@
 use lox;
 
 use clap::Parser;
-use std::path::PathBuf;
+use std::{io, path::PathBuf};
 
 #[derive(Parser)]
 struct Cli {
     script: Option<PathBuf>,
 }
 
-fn main() {
+fn main() -> io::Result<()> {
     let args = Cli::parse();
     match args.script {
         None => {
@@ -17,7 +17,8 @@ fn main() {
         }
         Some(path) => {
             println!("Script: {:?}", &path);
-            lox::run_file(&path);
+            lox::run_file(&path)?;
         }
     }
+    Ok(())
 }
