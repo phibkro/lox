@@ -1,4 +1,5 @@
-use std::io::{self, Write};
+use std::fs::File;
+use std::io::{self, BufRead, BufReader, Write};
 use std::path::PathBuf;
 
 pub fn run_prompt() {
@@ -14,8 +15,20 @@ pub fn run_prompt() {
     println!("Bye bye!");
 }
 
-pub fn run_file(path: &PathBuf) {
-    todo!();
+pub fn run_file(path: &PathBuf) -> io::Result<()> {
+    let file = File::open(path)?;
+    let mut reader = BufReader::new(file);
+
+    let mut line = String::new();
+    while let Ok(bytes_read) = reader.read_line(&mut line) {
+        if bytes_read == 0 {
+            break;
+        }
+        println!("{}", line.trim());
+        line.clear();
+    }
+
+    Ok(())
 }
 
 fn run(command: &str) {
