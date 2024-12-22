@@ -1,4 +1,4 @@
-use lox;
+use lox::book::{run_file, run_prompt};
 
 use clap::Parser;
 use std::{io, path::PathBuf};
@@ -13,11 +13,11 @@ fn main() -> io::Result<()> {
     match args.script {
         None => {
             println!("Starting REPL mode");
-            lox::run_prompt();
+            run_prompt();
         }
         Some(path) => {
             println!("Script: {:?}", &path);
-            lox::run_file(&path)?;
+            run_file(&path)?;
         }
     }
     Ok(())
