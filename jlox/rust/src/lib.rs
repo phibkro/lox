@@ -7,6 +7,9 @@ pub fn run_prompt() {
     print!("> ");
     io::stdout().flush().unwrap();
     while io::stdin().read_line(&mut buffer).is_ok() {
+        if buffer == "\n" {
+            break;
+        }
         run(&buffer);
         buffer.clear();
         print!("> ");
