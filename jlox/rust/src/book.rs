@@ -58,3 +58,14 @@ pub fn report(line: usize, location: &str, message: &str) {
         HAD_ERROR = true;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_file() {
+        let path = PathBuf::from("src/tests/hello_world.lox");
+        assert!(run_file(&path).is_ok());
+    }
+}
