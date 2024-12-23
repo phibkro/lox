@@ -1,3 +1,6 @@
+pub mod scanner;
+pub mod tokens;
+
 use std::fs::File;
 use std::io::{self, BufRead, BufReader, Write};
 use std::path::PathBuf;
@@ -183,3 +186,4 @@ impl TokenType {
         }
     }
 }
+

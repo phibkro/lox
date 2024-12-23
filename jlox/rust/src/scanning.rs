@@ -1,10 +1,14 @@
+pub mod tokens;
+pub mod scanner;
+pub mod mine;
+
 use std::fs::File;
 use std::io::{self, BufRead, BufReader, Write};
 use std::path::PathBuf;
 
-pub mod tokens;
-pub mod scanner;
 use scanner::Scanner;
+
+static mut HAD_ERROR: bool = false;
 
 pub fn run_prompt() {
     let mut buffer = String::new();
@@ -49,8 +53,6 @@ fn run(code: &str) {
         println!("{:?}", token);
     }
 }
-
-static mut HAD_ERROR: bool = false;
 
 pub fn error (line: usize, message: &str) {
     report(line, "", message);

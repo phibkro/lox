@@ -1,2 +1,2 @@
-pub mod book;
-pub mod mine;
+// Chapter 4: Scanning
+pub mod scanning;

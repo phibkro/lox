@@ -1,4 +1,4 @@
-use lox::book::{run_file, run_prompt};
+use lox::scanning::{run_file, run_prompt};
 
 use clap::Parser;
 use std::{io, path::PathBuf};
