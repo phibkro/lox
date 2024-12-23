@@ -79,13 +79,27 @@ impl Scanner {
                 }
             }
             '/' => {
-                if self.match_char('/') {
-                    // A comment goes until the end of the line.
-                    while self.peek() != '\n' && !self.is_at_end() {
+                match self.peek() {
+                    '/' => {
+                        // A comment goes until the end of the line.
+                        while self.peek() != '\n' && !self.is_at_end() {
+                            self.advance();
+                        }
+                    }
+                    '*' => {
+                        // A block comment goes until the end of the block.
+                        while self.peek() != '*' && self.peek_next() != '/' && !self.is_at_end() {
+                            if self.peek() == '\n' {
+                                self.line += 1;
+                            }
+                            self.advance();
+                        }
+                        // Consume the closing */
+                        self.advance();
                         self.advance();
                     }
-                } else {
-                    self.add_token(TokenType::Slash);
+                    _ => self.add_token(TokenType::Slash),
+                    
                 }
             }
             ' ' | '\r' | '\t' => (),
