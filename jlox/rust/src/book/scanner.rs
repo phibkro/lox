@@ -231,3 +231,33 @@ impl Scanner {
         });
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn variable_declaration() {
+        let source = String::from("var x = 1;");
+        let mut scanner = Scanner::from(source);
+        let tokens = scanner.scan_tokens();
+        assert_eq!(tokens.len(), 6);
+        assert_eq!(tokens[0].token_type, TokenType::Var);
+        assert_eq!(tokens[1].token_type, TokenType::Identifier(String::from("x")));
+        assert_eq!(tokens[2].token_type, TokenType::Eq);
+        assert_eq!(tokens[3].token_type, TokenType::Number(String::from("1")));
+        assert_eq!(tokens[4].token_type, TokenType::Semicolon);
+        assert_eq!(tokens[5].token_type, TokenType::Eof);
+    }
+
+    #[test]
+    fn string_literal() {
+        let source = String::from("\"Hello, World!\"");
+        let mut scanner = Scanner::from(source);
+        let tokens = scanner.scan_tokens();
+        assert_eq!(tokens.len(), 2);
+        assert_eq!(tokens[0].token_type, TokenType::String(String::from("Hello, World!")));
+        assert_eq!(tokens[1].token_type, TokenType::Eof);
+    }
+}
