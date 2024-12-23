@@ -7,7 +7,7 @@ pub struct Token {
 
 /* Single-character tokens */
 
-// Regions
+// Grouping
 pub const PAREN_OPEN: TokenType = TokenType::ParenOpen("(");
 pub const PAREN_CLOSED: TokenType = TokenType::ParenClosed(")");
 
@@ -15,10 +15,12 @@ pub const PAREN_CLOSED: TokenType = TokenType::ParenClosed(")");
 pub const BRACE_OPEN: TokenType = TokenType::BlockOpen("{");
 pub const BRACE_CLOSED: TokenType = TokenType::BlockClosed("}");
 
-// Separators
-pub const COMMA: TokenType = TokenType::Comma(",");
-pub const SEMICOLON: TokenType = TokenType::Semicolon(";");
-pub const DOT: TokenType = TokenType::Dot(".");
+// Separator
+pub const COMMA: TokenType = TokenType::Separator(",");
+// End of statement
+pub const SEMICOLON: TokenType = TokenType::StatementTerminator(";");
+// Member Selection
+pub const DOT: TokenType = TokenType::MemberAccess(".");
 
 // Math Operators
 pub const MINUS: TokenType = TokenType::Subtraction("-");
@@ -88,10 +90,12 @@ pub enum TokenType {
     BlockOpen(&'static str),
     BlockClosed(&'static str),
 
-    // Separators
-    Comma(&'static str),
-    Semicolon(&'static str),
-    Dot(&'static str),
+    // Separator
+    Separator(&'static str),
+    // End of statement
+    StatementTerminator(&'static str),
+    // Member Selection
+    MemberAccess(&'static str),
 
     // Math Operators
     Subtraction(&'static str),
