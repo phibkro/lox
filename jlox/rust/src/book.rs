@@ -31,8 +31,12 @@ pub fn run_file(path: &PathBuf) -> io::Result<()> {
         if bytes_read == 0 {
             break;
         }
-        println!("{}", line.trim());
+        run(&line);
         line.clear();
+    }
+    
+    if unsafe { HAD_ERROR } {
+        return Err(io::Error::new(io::ErrorKind::Other, "Had error"));
     }
 
     Ok(())

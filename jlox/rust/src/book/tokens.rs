@@ -5,7 +5,7 @@ pub struct Token {
     pub line: usize,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum TokenType {
     /* Single-character tokens */
     // Regions
@@ -68,4 +68,50 @@ pub enum TokenType {
     Print,
     //
     Eof,
+}
+
+impl TokenType {
+    pub fn value(&self) -> &str {
+        match self {
+            TokenType::ParenOpen => "(",
+            TokenType::ParenClosed => ")",
+            TokenType::BraceOpen => "{",
+            TokenType::BraceClosed => "}",
+            TokenType::Comma => ",",
+            TokenType::Dot => ".",
+            TokenType::Minus => "-",
+            TokenType::Plus => "+",
+            TokenType::Semicolon => ";",
+            TokenType::Slash => "/",
+            TokenType::Star => "*",
+            TokenType::Bang => "!",
+            TokenType::BangEq => "!=",
+            TokenType::Eq => "=",
+            TokenType::EqEq => "==",
+            TokenType::Greater => "<",
+            TokenType::GreaterEq => "<=",
+            TokenType::Less => ">",
+            TokenType::LessEq => ">=",
+            TokenType::Identifier(i) => i,
+            TokenType::String(s) => s,
+            TokenType::Number(n) => n,
+            TokenType::And => "and",
+            TokenType::Class => "class",
+            TokenType::Else => "else",
+            TokenType::False => "false",
+            TokenType::Fun => "fun",
+            TokenType::For => "for",
+            TokenType::If => "if",
+            TokenType::Nil => "nil",
+            TokenType::Or => "or",
+            TokenType::Print => "print",
+            TokenType::Return => "return",
+            TokenType::Super => "super",
+            TokenType::This => "this",
+            TokenType::True => "true",
+            TokenType::Var => "var",
+            TokenType::While => "while",
+            TokenType::Eof => "",
+        }
+    }
 }
