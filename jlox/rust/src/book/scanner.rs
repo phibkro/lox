@@ -165,7 +165,7 @@ impl Scanner {
         self.advance();
 
         // Trim the surrounding quotes
-        let lexeme = self.source.get(self.start..self.current).unwrap();
+        let lexeme = self.source.get(self.start + 1..self.current - 1).unwrap();
         self.tokens.push(Token {
             token_type: TokenType::String(lexeme.to_string()),
             lexeme: lexeme.to_string(),
