@@ -1,6 +1,6 @@
-pub mod tokens;
-pub mod scanner;
 pub mod mine;
+pub mod scanner;
+pub mod tokens;
 
 use std::fs::File;
 use std::io::{self, BufRead, BufReader, Write};
@@ -38,7 +38,7 @@ pub fn run_file(path: &PathBuf) -> io::Result<()> {
         run(&line);
         line.clear();
     }
-    
+
     if unsafe { HAD_ERROR } {
         return Err(io::Error::new(io::ErrorKind::Other, "Had error"));
     }
@@ -54,7 +54,7 @@ fn run(code: &str) {
     }
 }
 
-pub fn error (line: usize, message: &str) {
+pub fn error(line: usize, message: &str) {
     report(line, "", message);
 }
 

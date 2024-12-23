@@ -80,7 +80,6 @@ pub const PRINT: TokenType = TokenType::Print("print");
 #[derive(Debug, PartialEq)]
 pub enum TokenType {
     /* Primitives */
-
     // Regions
     ParenOpen(&'static str),
     ParenClosed(&'static str),
@@ -109,7 +108,6 @@ pub enum TokenType {
     LessThanOrEqual(&'static str),
 
     /* Types */
-
     // Literals.
     Identifier(String),
     String(String),
@@ -118,12 +116,11 @@ pub enum TokenType {
     // Boolean
     True(&'static str),
     False(&'static str),
-    
+
     // Nil
     Nil(&'static str),
 
     /* Control Flow */
-
     Return(&'static str),
 
     // Conditional
@@ -133,28 +130,26 @@ pub enum TokenType {
     // Iteration
     While(&'static str),
     For(&'static str),
-    
+
     // Logical
     Not(&'static str),
     And(&'static str),
     Or(&'static str),
 
     /* */
-
     // Assignment
     Assignment(&'static str),
 
     // Declaration
     Variable(&'static str),
     Function(&'static str),
-    
+
     // Object Orientation
     Class(&'static str),
     This(&'static str),
     Super(&'static str),
-    
-    /* Extras */
 
+    /* Extras */
     // IO
     Print(&'static str),
 

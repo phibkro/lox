@@ -37,7 +37,7 @@ pub fn run_file(path: &PathBuf) -> io::Result<()> {
         run(&line);
         line.clear();
     }
-    
+
     if unsafe { HAD_ERROR } {
         return Err(io::Error::new(io::ErrorKind::Other, "Had error"));
     }
@@ -53,7 +53,7 @@ fn run(code: &str) {
     }
 }
 
-pub fn error (line: usize, message: &str) {
+pub fn error(line: usize, message: &str) {
     report(line, "", message);
 }
 
@@ -95,4 +95,3 @@ enum Boolean {
     True,
     False,
 }
-

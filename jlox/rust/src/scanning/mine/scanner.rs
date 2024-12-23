@@ -99,7 +99,6 @@ impl Scanner {
                         self.advance();
                     }
                     _ => self.add_token(tokens::SLASH),
-                    
                 }
             }
             ' ' | '\r' | '\t' => (),
@@ -229,7 +228,6 @@ impl Scanner {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -241,7 +239,10 @@ mod tests {
         let tokens = scanner.scan_tokens();
         assert_eq!(tokens.len(), 6);
         assert_eq!(tokens[0].token_type, tokens::VAR);
-        assert_eq!(tokens[1].token_type, TokenType::Identifier(String::from("x")));
+        assert_eq!(
+            tokens[1].token_type,
+            TokenType::Identifier(String::from("x"))
+        );
         assert_eq!(tokens[2].token_type, tokens::EQ);
         assert_eq!(tokens[3].token_type, TokenType::Number(String::from("1")));
         assert_eq!(tokens[4].token_type, tokens::SEMICOLON);
@@ -254,7 +255,10 @@ mod tests {
         let mut scanner = Scanner::from(source);
         let tokens = scanner.scan_tokens();
         assert_eq!(tokens.len(), 2);
-        assert_eq!(tokens[0].token_type, TokenType::String(String::from("Hello, World!")));
+        assert_eq!(
+            tokens[0].token_type,
+            TokenType::String(String::from("Hello, World!"))
+        );
         assert_eq!(tokens[1].token_type, TokenType::Eof);
     }
 }
