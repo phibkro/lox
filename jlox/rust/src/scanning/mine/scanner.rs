@@ -1,4 +1,4 @@
-use super::tokens::{Token, TokenType};
+use super::tokens::{self, Token, TokenType};
 
 pub struct Scanner {
     source: String,
@@ -40,42 +40,42 @@ impl Scanner {
     fn scan_token(&mut self) {
         let c = self.advance();
         match c {
-            '(' => self.add_token(TokenType::ParenOpen),
-            ')' => self.add_token(TokenType::ParenClosed),
-            '{' => self.add_token(TokenType::BraceOpen),
-            '}' => self.add_token(TokenType::BraceClosed),
-            ',' => self.add_token(TokenType::Comma),
-            ';' => self.add_token(TokenType::Semicolon),
-            '.' => self.add_token(TokenType::Dot),
-            '-' => self.add_token(TokenType::Minus),
-            '+' => self.add_token(TokenType::Plus),
-            '*' => self.add_token(TokenType::Star),
+            '(' => self.add_token(tokens::PAREN_OPEN),
+            ')' => self.add_token(tokens::PAREN_CLOSED),
+            '{' => self.add_token(tokens::BRACE_OPEN),
+            '}' => self.add_token(tokens::BRACE_CLOSED),
+            ',' => self.add_token(tokens::COMMA),
+            ';' => self.add_token(tokens::SEMICOLON),
+            '.' => self.add_token(tokens::DOT),
+            '-' => self.add_token(tokens::MINUS),
+            '+' => self.add_token(tokens::PLUS),
+            '*' => self.add_token(tokens::STAR),
             '!' => {
                 if self.match_char('=') {
-                    self.add_token(TokenType::BangEq);
+                    self.add_token(tokens::BANG_EQ);
                 } else {
-                    self.add_token(TokenType::Bang);
+                    self.add_token(tokens::BANG);
                 }
             }
             '=' => {
                 if self.match_char('=') {
-                    self.add_token(TokenType::EqEq);
+                    self.add_token(tokens::EQ_EQ);
                 } else {
-                    self.add_token(TokenType::Eq);
+                    self.add_token(tokens::EQ);
                 }
             }
             '<' => {
                 if self.match_char('=') {
-                    self.add_token(TokenType::LessEq);
+                    self.add_token(tokens::LESS_EQ);
                 } else {
-                    self.add_token(TokenType::Less);
+                    self.add_token(tokens::LESS);
                 }
             }
             '>' => {
                 if self.match_char('=') {
-                    self.add_token(TokenType::GreaterEq);
+                    self.add_token(tokens::GREATER_EQ);
                 } else {
-                    self.add_token(TokenType::Greater);
+                    self.add_token(tokens::GREATER);
                 }
             }
             '/' => {
@@ -98,7 +98,7 @@ impl Scanner {
                         self.advance();
                         self.advance();
                     }
-                    _ => self.add_token(TokenType::Slash),
+                    _ => self.add_token(tokens::SLASH),
                     
                 }
             }
@@ -209,26 +209,23 @@ impl Scanner {
         }
 
         let lexeme = self.source.get(self.start..self.current).unwrap();
-        let token_type = match lexeme {
-            "class" => TokenType::Class,
-            "else" => TokenType::Else,
-            "false" => TokenType::False,
-            "for" => TokenType::For,
-            "if" => TokenType::If,
-            "nil" => TokenType::Nil,
-            "return" => TokenType::Return,
-            "super" => TokenType::Super,
-            "this" => TokenType::This,
-            "true" => TokenType::True,
-            "var" => TokenType::Var,
-            "while" => TokenType::While,
-            _ => TokenType::Identifier(lexeme.to_string()),
-        };
-        self.tokens.push(Token {
-            token_type,
-            lexeme: lexeme.to_string(),
-            line: self.line,
-        });
+        match lexeme {
+            "and" => self.add_token(tokens::AND),
+            "class" => self.add_token(tokens::CLASS),
+            "else" => self.add_token(tokens::ELSE),
+            "false" => self.add_token(tokens::FALSE),
+            "for" => self.add_token(tokens::FOR),
+            "if" => self.add_token(tokens::IF),
+            "nil" => self.add_token(tokens::NIL),
+            "or" => self.add_token(tokens::OR),
+            "return" => self.add_token(tokens::RETURN),
+            "super" => self.add_token(tokens::SUPER),
+            "this" => self.add_token(tokens::THIS),
+            "true" => self.add_token(tokens::TRUE),
+            "var" => self.add_token(tokens::VAR),
+            "while" => self.add_token(tokens::WHILE),
+            _ => self.add_token(TokenType::Identifier(lexeme.to_string())),
+        }
     }
 }
 
@@ -243,11 +240,11 @@ mod tests {
         let mut scanner = Scanner::from(source);
         let tokens = scanner.scan_tokens();
         assert_eq!(tokens.len(), 6);
-        assert_eq!(tokens[0].token_type, TokenType::Var);
+        assert_eq!(tokens[0].token_type, tokens::VAR);
         assert_eq!(tokens[1].token_type, TokenType::Identifier(String::from("x")));
-        assert_eq!(tokens[2].token_type, TokenType::Eq);
+        assert_eq!(tokens[2].token_type, tokens::EQ);
         assert_eq!(tokens[3].token_type, TokenType::Number(String::from("1")));
-        assert_eq!(tokens[4].token_type, TokenType::Semicolon);
+        assert_eq!(tokens[4].token_type, tokens::SEMICOLON);
         assert_eq!(tokens[5].token_type, TokenType::Eof);
     }
 

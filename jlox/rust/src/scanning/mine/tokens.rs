@@ -5,36 +5,100 @@ pub struct Token {
     pub line: usize,
 }
 
+pub const PAREN_OPEN: TokenType = TokenType::ParenOpen("(");
+pub const PAREN_CLOSED: TokenType = TokenType::ParenClosed(")");
+
+// Block
+pub const BRACE_OPEN: TokenType = TokenType::BraceOpen("{");
+pub const BRACE_CLOSED: TokenType = TokenType::BraceClosed("}");
+
+// Separators
+pub const COMMA: TokenType = TokenType::Comma(",");
+pub const SEMICOLON: TokenType = TokenType::Semicolon(";");
+pub const DOT: TokenType = TokenType::Dot(".");
+
+// Math Operators
+pub const MINUS: TokenType = TokenType::Minus("-");
+pub const PLUS: TokenType = TokenType::Plus("+");
+pub const SLASH: TokenType = TokenType::Slash("/");
+pub const STAR: TokenType = TokenType::Star("*");
+
+// Negation
+pub const BANG: TokenType = TokenType::Bang("!");
+
+// Assignment
+pub const EQ: TokenType = TokenType::Eq("=");
+
+// Comparison
+pub const BANG_EQ: TokenType = TokenType::BangEq("!=");
+pub const EQ_EQ: TokenType = TokenType::EqEq("==");
+pub const GREATER: TokenType = TokenType::Greater(">");
+pub const GREATER_EQ: TokenType = TokenType::GreaterEq(">=");
+pub const LESS: TokenType = TokenType::Less("<");
+pub const LESS_EQ: TokenType = TokenType::LessEq("<=");
+
+// Boolean
+pub const TRUE: TokenType = TokenType::True("true");
+pub const FALSE: TokenType = TokenType::False("false");
+
+// Control Flow
+pub const IF: TokenType = TokenType::If("if");
+pub const ELSE: TokenType = TokenType::Else("else");
+pub const RETURN: TokenType = TokenType::Return("return");
+
+// OOP
+pub const CLASS: TokenType = TokenType::Class("class");
+pub const THIS: TokenType = TokenType::This("this");
+pub const SUPER: TokenType = TokenType::Super("super");
+
+// Loop
+pub const WHILE: TokenType = TokenType::While("while");
+pub const FOR: TokenType = TokenType::For("for");
+
+// Logical
+pub const AND: TokenType = TokenType::And("and");
+pub const OR: TokenType = TokenType::Or("or");
+
+// Declaration
+pub const FUN: TokenType = TokenType::Fun("fun");
+pub const VAR: TokenType = TokenType::Var("var");
+
+// Nil
+pub const NIL: TokenType = TokenType::Nil("nil");
+
+// IO
+pub const PRINT: TokenType = TokenType::Print("print");
+
 #[derive(Debug, PartialEq)]
 pub enum TokenType {
     /* Single-character tokens */
     // Regions
-    ParenOpen,
-    ParenClosed,
-    BraceOpen,
-    BraceClosed,
+    ParenOpen(&'static str),
+    ParenClosed(&'static str),
+    BraceOpen(&'static str),
+    BraceClosed(&'static str),
     // Separators
-    Comma,
-    Semicolon,
-    Dot,
+    Comma(&'static str),
+    Semicolon(&'static str),
+    Dot(&'static str),
     // Math Operators
-    Minus,
-    Plus,
-    Slash,
-    Star,
+    Minus(&'static str),
+    Plus(&'static str),
+    Slash(&'static str),
+    Star(&'static str),
 
     /* One or two character tokens */
     // Negation
-    Bang,
+    Bang(&'static str),
     // Assignment
-    Eq,
+    Eq(&'static str),
     // Comparison
-    BangEq,
-    EqEq,
-    Greater,
-    GreaterEq,
-    Less,
-    LessEq,
+    BangEq(&'static str),
+    EqEq(&'static str),
+    Greater(&'static str),
+    GreaterEq(&'static str),
+    Less(&'static str),
+    LessEq(&'static str),
 
     // Literals.
     Identifier(String),
@@ -43,75 +107,29 @@ pub enum TokenType {
 
     /* Keywords */
     // Boolean
-    True,
-    False,
+    True(&'static str),
+    False(&'static str),
     // Control Flow
-    If,
-    Else,
-    Return,
+    If(&'static str),
+    Else(&'static str),
+    Return(&'static str),
     // OOP
-    Class,
-    This,
-    Super,
+    Class(&'static str),
+    This(&'static str),
+    Super(&'static str),
     // Loop
-    While,
-    For,
+    While(&'static str),
+    For(&'static str),
     //
-    And,
-    Or,
+    And(&'static str),
+    Or(&'static str),
     //
-    Fun,
-    Var,
+    Fun(&'static str),
+    Var(&'static str),
     //
-    Nil,
+    Nil(&'static str),
     // IO
-    Print,
+    Print(&'static str),
     //
     Eof,
-}
-
-impl TokenType {
-    pub fn value(&self) -> &str {
-        match self {
-            TokenType::ParenOpen => "(",
-            TokenType::ParenClosed => ")",
-            TokenType::BraceOpen => "{",
-            TokenType::BraceClosed => "}",
-            TokenType::Comma => ",",
-            TokenType::Dot => ".",
-            TokenType::Minus => "-",
-            TokenType::Plus => "+",
-            TokenType::Semicolon => ";",
-            TokenType::Slash => "/",
-            TokenType::Star => "*",
-            TokenType::Bang => "!",
-            TokenType::BangEq => "!=",
-            TokenType::Eq => "=",
-            TokenType::EqEq => "==",
-            TokenType::Greater => "<",
-            TokenType::GreaterEq => "<=",
-            TokenType::Less => ">",
-            TokenType::LessEq => ">=",
-            TokenType::Identifier(i) => i,
-            TokenType::String(s) => s,
-            TokenType::Number(n) => n,
-            TokenType::And => "and",
-            TokenType::Class => "class",
-            TokenType::Else => "else",
-            TokenType::False => "false",
-            TokenType::Fun => "fun",
-            TokenType::For => "for",
-            TokenType::If => "if",
-            TokenType::Nil => "nil",
-            TokenType::Or => "or",
-            TokenType::Print => "print",
-            TokenType::Return => "return",
-            TokenType::Super => "super",
-            TokenType::This => "this",
-            TokenType::True => "true",
-            TokenType::Var => "var",
-            TokenType::While => "while",
-            TokenType::Eof => "",
-        }
-    }
 }
