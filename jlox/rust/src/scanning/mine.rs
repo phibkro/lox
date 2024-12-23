@@ -61,15 +61,6 @@ pub enum Operator {
     Bang,
 }
 
-/* Expression */
-
-#[allow(dead_code)]
-enum Primary {
-    String(String),
-    Number(i32),
-    Bool(Boolean),
-    Expression(Literal),
-}
 #[allow(dead_code)]
 enum Boolean {
     True,
