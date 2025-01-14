@@ -12,10 +12,10 @@ pub fn main() !void {
     var chunk = try root.Chunk.init(allocator);
 
     const constant = try chunk.add_constant(1.2);
-    try chunk.write(@intFromEnum(root.OpCode.CONSTANT));
-    try chunk.write(constant);
+    try chunk.write(@intFromEnum(root.OpCode.CONSTANT), 123);
+    try chunk.write(constant, 123);
 
-    try chunk.write(@intFromEnum(root.OpCode.RETURN));
+    try chunk.write(@intFromEnum(root.OpCode.RETURN), 123);
 
     try disassembler.disassemble_chunk(chunk, "test chunk");
 }

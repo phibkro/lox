@@ -11,7 +11,13 @@ pub fn disassemble_chunk(chunk: root.Chunk, name: []const u8, writer: std.io.Any
 }
 
 pub fn disassemble_instruction(chunk: root.Chunk, offset: usize, writer: std.io.AnyWriter) !usize {
-    try writer.print("{d} ", .{offset});
+    try writer.print("{d:0>4} ", .{offset});
+
+    if (offset > 0 and chunk.lines.items[offset] == chunk.lines.items[offset - 1]) {
+        try writer.print("   | ", .{});
+    } else {
+        try writer.print("{d: >4} ", .{chunk.lines.items[offset]});
+    }
 
     const instruction = chunk.code.items[offset];
 

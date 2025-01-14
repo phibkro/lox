@@ -14,11 +14,13 @@ pub const Chunk = struct {
     const Self = @This();
     code: std.ArrayList(u8),
     constants: std.ArrayList(Value),
+    lines: std.ArrayList(usize),
 
     pub fn init(allocator: std.mem.Allocator) !Chunk {
         return .{
             .code = std.ArrayList(u8).init(allocator),
             .constants = std.ArrayList(Value).init(allocator),
+            .lines = std.ArrayList(usize).init(allocator),
         };
     }
 
@@ -27,8 +29,17 @@ pub const Chunk = struct {
         self.constants.deinit();
     }
 
-    pub fn write(self: *Self, byte: u8) !void {
+    pub fn count(self: *Self) !usize {
+        return try self.code.items.len;
+    }
+
+    pub fn capacity(self: *Self) !usize {
+        return try self.code.capacity;
+    }
+
+    pub fn write(self: *Self, byte: u8, line: usize) !void {
         try self.code.append(byte);
+        try self.lines.append(line);
     }
 
     /// Returns the index of the added constant
