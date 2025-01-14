@@ -17,25 +17,27 @@ pub const Chunk = struct {
 pub const ChunkArray = std.ArrayList(Chunk);
 
 pub const Disassembler = struct {
+    const Self = @This();
+
     writer: std.io.AnyWriter,
 
-    pub fn disassemble_chunk(self: *Disassembler, chunk: ChunkArray, name: []const u8) !void {
-        debug.disassemble_chunk(chunk, name, self.writer);
+    pub fn disassemble_chunk(self: *Self, chunk: ChunkArray, name: []const u8) !void {
+        try debug.disassemble_chunk(chunk, name, self.writer);
     }
 
-    pub fn disassemble_instruction(self: *Disassembler, chunk: Chunk, offset: usize) !usize {
-        debug.disassemble_instruction(chunk, offset, self.writer);
+    pub fn disassemble_instruction(self: *Self, chunk: Chunk, offset: usize) !usize {
+        try debug.disassemble_instruction(chunk, offset, self.writer);
     }
 
-    pub fn constant_instruction(self: *Disassembler, name: []const u8, chunk: Chunk, offset: usize) !usize {
-        debug.constant_instruction(name, chunk, offset, self.writer);
+    pub fn constant_instruction(self: *Self, name: []const u8, chunk: Chunk, offset: usize) !usize {
+        try debug.constant_instruction(name, chunk, offset, self.writer);
     }
 
-    pub fn print_value(self: *Disassembler, value: Value) !void {
-        debug.print_value(value, self.writer);
+    pub fn print_value(self: *Self, value: Value) !void {
+        try debug.print_value(value, self.writer);
     }
 
-    pub fn simple_instruction(self: *Disassembler, name: []const u8, offset: usize) !usize {
-        debug.simple_instruction(name, offset, self.writer);
+    pub fn simple_instruction(self: *Self, name: []const u8, offset: usize) !usize {
+        try debug.simple_instruction(name, offset, self.writer);
     }
 };
