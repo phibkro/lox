@@ -7,7 +7,7 @@ pub fn main() !void {
     const allocator = arena.allocator();
 
     const std_out = std.io.getStdOut().writer().any();
-    const disassembler = root.Disassembler{ .writer = std_out };
+    var disassembler = root.Disassembler{ .writer = std_out };
 
     var chunk_array = root.ChunkArray.init(allocator);
     var constant_array = root.ValueArray.init(allocator);
