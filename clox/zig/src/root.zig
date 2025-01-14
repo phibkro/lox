@@ -11,17 +11,39 @@ pub const Value = f64;
 pub const ValueArray = std.ArrayList(Value);
 
 pub const Chunk = struct {
-    code: u8,
-    constants: ?std.ArrayList(Value),
+    const Self = @This();
+    code: std.ArrayList(u8),
+    constants: std.ArrayList(Value),
+
+    pub fn init(allocator: std.mem.Allocator) !Chunk {
+        return .{
+            .code = std.ArrayList(u8).init(allocator),
+            .constants = std.ArrayList(Value).init(allocator),
+        };
+    }
+
+    pub fn deinit(self: *Self) !void {
+        self.code.deinit();
+        self.constants.deinit();
+    }
+
+    pub fn write(self: *Self, byte: u8) !void {
+        try self.code.append(byte);
+    }
+
+    /// Returns the index of the added constant
+    pub fn add_constant(self: *Self, value: Value) !u8 {
+        try self.constants.append(value);
+        return @intCast(self.constants.items.len - 1);
+    }
 };
-pub const ChunkArray = std.ArrayList(Chunk);
 
 pub const Disassembler = struct {
     const Self = @This();
 
     writer: std.io.AnyWriter,
 
-    pub fn disassemble_chunk(self: *Self, chunk: ChunkArray, name: []const u8) !void {
+    pub fn disassemble_chunk(self: *Self, chunk: Chunk, name: []const u8) !void {
         try debug.disassemble_chunk(chunk, name, self.writer);
     }
 
